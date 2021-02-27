@@ -1,5 +1,5 @@
-from data.views.iview import IView
-from data.visual_element import VisualButton
+from data.views.iview import IView, constants
+from data.widgets.visual_element import VisualButton
 from data.models.main_menu import MainMenu
 from data.constants import *
 
@@ -8,7 +8,7 @@ class MainMenuView(IView):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        self.background_img = self.extracter.extract_image('assets\\backgrounds\\main_menu_bg.png', self.scale_factor)
+        self.background_img = self.extractor.extract_image('assets\\backgrounds\\main_menu_bg.png', constants.SCALE_FACTOR)
         self.pixel_position = 0, 0
 
         self.__init_buttons()

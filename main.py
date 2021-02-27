@@ -2,7 +2,7 @@ import os
 import platform
 import sys
 import pygame
-from pygame import K_F4, K_RALT, K_LALT, QUIT, KEYDOWN, K_a, K_LEFT, K_RIGHT
+from pygame import K_F4, K_RALT, K_LALT, QUIT, KEYDOWN, K_a, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE, K_v, K_SPACE
 from data.controller import Controller
 from data.actions_capturer import ActionsCapturer
 from data.constants import FULL_SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT
@@ -41,10 +41,18 @@ if __name__ == '__main__':
             if event.type == KEYDOWN:
                 if event.key == K_a:
                     actions_capturer.key_a = True
-                if event.key == K_LEFT:
+                elif event.key == K_LEFT:
                     actions_capturer.key_left = True
-                if event.key == K_RIGHT:
+                elif event.key == K_RIGHT:
                     actions_capturer.key_right = True
+                elif event.key == K_UP:
+                    actions_capturer.key_up = True
+                elif event.key == K_DOWN:
+                    actions_capturer.key_down = True
+                elif event.key == K_ESCAPE:
+                    actions_capturer.key_escape = True
+                elif event.key == K_v:
+                    actions_capturer.key_v = True
 
         if controller.update_model(actions_capturer) == 'quit':
             sys.exit()

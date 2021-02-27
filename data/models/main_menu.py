@@ -1,6 +1,6 @@
 from data.models.imodel import IModel, ActionsCapturer
 from data.jump_commands import GameCommand, SettingsMenuCommand, QuitCommand
-from data.interface_elements import Button
+from data.widgets.interface_elements import Button
 
 
 class MainMenu(IModel):
@@ -20,13 +20,13 @@ class MainMenu(IModel):
                     self.buttons[i].active = False
                     self.buttons[i - 1].active = True
                     break
-        if actions.key_right:
+        elif actions.key_right:
             for i in range(0, len(self.buttons) - 1):
                 if self.buttons[i].active:
                     self.buttons[i].active = False
                     self.buttons[i + 1].active = True
                     break
-        if actions.key_a:
+        elif actions.key_a:
             # return GameCommand.execute()
             for button in self.buttons:
                 if button.active:

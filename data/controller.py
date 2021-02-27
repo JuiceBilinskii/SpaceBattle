@@ -1,8 +1,8 @@
 import pygame
 from enum import Enum
-from data.models.main_menu import MainMenu
+from data.contexts import MainMenu
 from data.views.main_menu_view import MainMenuView
-from data.models.game import Game
+from data.contexts import Game
 from data.views.game_view import GameView
 from data.actions_capturer import ActionsCapturer
 

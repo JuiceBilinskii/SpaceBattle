@@ -3,14 +3,30 @@ import pygame
 pygame.init()
 
 
-FULL_SCREEN = False
+# Config extraction
+config = {'FULL SCREEN': True}
+CONFIG_FILE = 'config.json'
+try:
+    with open(CONFIG_FILE) as f:
+        _config = json.load(f)
+except FileNotFoundError:
+    _config = {}
+for k, v in config.items():
+    config[k] = _config[k]
 
-if FULL_SCREEN:
+
+FULL_SCREEN = config['FULL SCREEN']
+
+if config['FULL SCREEN']:
     SCREEN_WIDTH = round(pygame.display.Info().current_w)
     SCREEN_HEIGHT = round(pygame.display.Info().current_h)
 else:
     SCREEN_WIDTH = round(pygame.display.Info().current_w * 0.75)
     SCREEN_HEIGHT = round(pygame.display.Info().current_h * 0.75)
+
+SCALE_FACTOR = SCREEN_WIDTH / 1920
+
+# print(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # SCREEN_WIDTH = pygame.display.Info().current_w
 # SCREEN_HEIGHT = pygame.display.Info().current_h
@@ -25,7 +41,7 @@ LIGHT_PURPLE = 113, 41, 139
 GREY = 204, 204, 204
 
 # Fonts
-# FONT_BOLD = 'assets/fonts/OpenSans-SemiBold.ttf'
+# FONT_BOLD = 'sprites/fonts/OpenSans-SemiBold.ttf'
 FONT_BOLD = 'assets/fonts/DisposableDroidBB.ttf'
 FONT_REG = 'assets/fonts/OpenSans-Regular.ttf'
 FONT_LIGHT = 'assets/fonts/OpenSans-Light.ttf'
