@@ -1,9 +1,9 @@
-from data.models.model import Model, ActionsCapturer
+from tortilla.models.model import Model, ActionsCapturer
 from enum import Enum
-from data.field import Field
-from data.game_strategies import *
-from data.player import *
-from data.entities import *
+from tortilla.field import Field
+from tortilla.game_strategies import *
+from tortilla.player import *
+from tortilla.entities import *
 
 
 class GameStatus(Enum):

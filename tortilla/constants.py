@@ -5,7 +5,7 @@ pygame.init()
 
 # Config extraction
 config = {'FULL SCREEN': True}
-CONFIG_FILE = 'data/config.json'
+CONFIG_FILE = 'tortilla/config.json'
 try:
     with open(CONFIG_FILE) as f:
         _config = json.load(f)
@@ -45,9 +45,9 @@ MINT_CREAM = 245, 255, 250
 # FONT_BOLD = 'sprites/fonts/OpenSans-SemiBold.ttf'
 
 try:
-    FONT_BOLD = 'data/assets/fonts/DisposableDroidBB.ttf'
-    FONT_REG = 'data/assets/fonts/OpenSans-Regular.ttf'
-    FONT_LIGHT = 'data/assets/fonts/OpenSans-Light.ttf'
+    FONT_BOLD = 'tortilla/assets/fonts/DisposableDroidBB.ttf'
+    FONT_REG = 'tortilla/assets/fonts/OpenSans-Regular.ttf'
+    FONT_LIGHT = 'tortilla/assets/fonts/OpenSans-Light.ttf'
 except FileNotFoundError:
     FONT_BOLD = 'arial'
     FONT_REG = 'arial'

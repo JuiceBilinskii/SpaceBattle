@@ -1,5 +1,5 @@
 import math
-from data.coordinate_converter import CoordinateConverter
+from tortilla.coordinate_converter import CoordinateConverter
 
 
 class HexagonPointsCalculator:

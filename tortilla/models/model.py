@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from data.actions_capturer import ActionsCapturer
+from tortilla.actions_capturer import ActionsCapturer
 
 
 class Model(ABC):

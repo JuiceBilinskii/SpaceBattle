@@ -1,5 +1,5 @@
-from data.common.hex_neighbors import axial_neighbor
-from data.hexagon import Hexagon
+from tortilla.common.hex_neighbors import axial_neighbor
+from tortilla.hexagon import Hexagon
 
 
 class Field:

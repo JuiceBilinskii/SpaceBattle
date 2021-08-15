@@ -1,17 +1,17 @@
 import json
 import unittest
 
-from data.actions_capturer import ActionsCapturer
-from data.entities import *
-from data.field import Field
-from data.hexagon import Hexagon
-from data.models.game import Game, GameStatus
-from data.models.main_menu import MainMenu
-from data.models.settings_menu import SettingsMenu
-from data.game_strategies import *
-from data.player import Player
-from data.widgets.widget_models import *
-from data.sprites_library import SpritesLibrary
+from tortilla.actions_capturer import ActionsCapturer
+from tortilla.entities import *
+from tortilla.field import Field
+from tortilla.hexagon import Hexagon
+from tortilla.models.game import Game, GameStatus
+from tortilla.models.main_menu import MainMenu
+from tortilla.models.settings_menu import SettingsMenu
+from tortilla.game_strategies import *
+from tortilla.player import Player
+from tortilla.widgets.widget_models import *
+from tortilla.sprites_library import SpritesLibrary
 
 
 class MainMenuTest(unittest.TestCase):
@@ -166,7 +166,7 @@ class SettingsMenuTest(unittest.TestCase):
 
     def test_change_screen_mode(self):
         config = {'FULL SCREEN': True}
-        CONFIG_FILE = 'data/config.json'
+        CONFIG_FILE = '../tortilla/config.json'
         try:
             with open(CONFIG_FILE) as f:
                 _config = json.load(f)

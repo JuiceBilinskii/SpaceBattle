@@ -1,16 +1,16 @@
 import pygame
-from data.views.view import View
-from data.models.settings_menu import SettingsMenu
-from data.widgets.widget_views import ButtonView, ToggleButtonView
-from data.text_objects import TextObjects
-from data.constants import *
+from tortilla.views.view import View
+from tortilla.models.settings_menu import SettingsMenu
+from tortilla.widgets.widget_views import ButtonView, ToggleButtonView
+from tortilla.text_objects import TextObjects
+from tortilla.constants import *
 
 
 class SettingsMenuView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        self.background_img = self._extractor.extract_image('data\\assets\\backgrounds\\settings_menu_bg.png', SCALE_FACTOR)
+        self.background_img = self._extractor.extract_image('tortilla\\assets\\backgrounds\\settings_menu_bg.png', SCALE_FACTOR)
         self.pixel_position = 0, 0
 
         self._label, self._label_rect = TextObjects.execute('Settings menu', LARGE_TEXT, colour=WHITE)

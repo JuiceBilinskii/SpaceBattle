@@ -1,6 +1,6 @@
 import pygame
 from abc import ABC, abstractmethod
-from data.extractor import ImageExtractor
+from tortilla.extractor import ImageExtractor
 
 
 class View(ABC):

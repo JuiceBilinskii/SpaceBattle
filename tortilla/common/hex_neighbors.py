@@ -1,4 +1,4 @@
-from data.common import coordinate_math
+from tortilla.common import coordinate_math
 
 cube_directions = [
     (+1, -1, 0), (+1, 0, -1), (0, +1, -1),

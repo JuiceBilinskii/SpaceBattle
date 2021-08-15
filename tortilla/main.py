@@ -4,9 +4,9 @@ def start_game():
     import sys
     import pygame
     from pygame import K_F4, K_RALT, K_LALT, QUIT, KEYDOWN, K_a, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE, K_v, K_SPACE
-    from data.controller import Controller
-    from data.actions_capturer import ActionsCapturer
-    from data.constants import FULL_SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT
+    from tortilla.controller import Controller
+    from tortilla.actions_capturer import ActionsCapturer
+    from tortilla.constants import FULL_SCREEN, SCREEN_WIDTH, SCREEN_HEIGHT
 
     # Initialization
     if platform.system() == 'Windows':

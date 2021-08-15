@@ -1,2 +1,1 @@
-# SpaceBattle
-Game project for my study
+This is the educational project.

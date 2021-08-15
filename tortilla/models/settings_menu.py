@@ -1,6 +1,6 @@
-from data.models.model import Model, ActionsCapturer
-from data.widgets.widget_models import Button, ToggleButton
-from data.constants import *
+from tortilla.models.model import Model, ActionsCapturer
+from tortilla.widgets.widget_models import Button, ToggleButton
+from tortilla.constants import *
 
 
 class SettingsMenu(Model):
@@ -9,7 +9,7 @@ class SettingsMenu(Model):
             'FULL SCREEN': FULL_SCREEN
         }
 
-        self._config_file = 'data\\config.json'
+        self._config_file = 'tortilla\\config.json'
 
         self._buttons = [
             ToggleButton(self.__change_screen_mode, self._config['FULL SCREEN']),

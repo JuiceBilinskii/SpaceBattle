@@ -1,21 +1,21 @@
 import pygame
-from data.views.view import View
-from data.models.game import Game
-from data.hexagon import Hexagon
-from data.hexagon_points_calculator import HexagonPointsCalculator
-from data.sprites_library import SpritesLibrary
-from data.text_objects import TextObjects
-from data.constants import SMALL_TEXT, WHITE, BLACK, LIGHT_PURPLE, SCALE_FACTOR
-from data.entities import *
+from tortilla.views.view import View
+from tortilla.models.game import Game
+from tortilla.hexagon import Hexagon
+from tortilla.hexagon_points_calculator import HexagonPointsCalculator
+from tortilla.sprites_library import SpritesLibrary
+from tortilla.text_objects import TextObjects
+from tortilla.constants import SMALL_TEXT, WHITE, BLACK, LIGHT_PURPLE, SCALE_FACTOR
+from tortilla.entities import *
 
 
 class GameView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        self.field_img = self._extractor.extract_image('data\\assets\\backgrounds\\field_bg.png', SCALE_FACTOR)
-        self.hud_img = self._extractor.extract_image('data\\assets\\backgrounds\\hud_bg.png', SCALE_FACTOR)
-        self.overview_img = self._extractor.extract_image('data\\assets\\backgrounds\\overview_bg.png', SCALE_FACTOR)
+        self.field_img = self._extractor.extract_image('tortilla\\assets\\backgrounds\\field_bg.png', SCALE_FACTOR)
+        self.hud_img = self._extractor.extract_image('tortilla\\assets\\backgrounds\\hud_bg.png', SCALE_FACTOR)
+        self.overview_img = self._extractor.extract_image('tortilla\\assets\\backgrounds\\overview_bg.png', SCALE_FACTOR)
 
         self._field = FieldView(screen)
         self._hud = HudView(screen)

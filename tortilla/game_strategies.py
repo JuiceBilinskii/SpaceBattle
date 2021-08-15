@@ -1,5 +1,5 @@
-from data.move import Move
-from data.attack import Attack
+from tortilla.move import Move
+from tortilla.attack import Attack
 
 
 class Strategy:

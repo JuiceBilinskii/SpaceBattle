@@ -1,6 +1,6 @@
-from data.constants import *
-from data.text_objects import TextObjects, DrawCircle
-from data.widgets.widget_models import *
+from tortilla.constants import *
+from tortilla.text_objects import TextObjects, DrawCircle
+from tortilla.widgets.widget_models import *
 
 
 class WidgetView:

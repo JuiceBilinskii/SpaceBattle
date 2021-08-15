@@ -1,5 +1,5 @@
-from data.models.model import Model, ActionsCapturer
-from data.widgets.widget_models import Button
+from tortilla.models.model import Model, ActionsCapturer
+from tortilla.widgets.widget_models import Button
 
 
 class MainMenu(Model):

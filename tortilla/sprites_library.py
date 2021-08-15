@@ -1,17 +1,17 @@
-from data.constants import SCALE_FACTOR
-from data.extractor import ImageExtractor
-from data.entities import *
+from tortilla.constants import SCALE_FACTOR
+from tortilla.extractor import ImageExtractor
+from tortilla.entities import *
 
 
 class SpritesLibrary:
     def __init__(self):
         self._extractor = ImageExtractor()
         self._ship_images = (
-            self._extractor.extract_image("data\\assets\\sprites\\ship_0.png", SCALE_FACTOR),
-            self._extractor.extract_image("data\\assets\\sprites\\ship_1.png", SCALE_FACTOR)
+            self._extractor.extract_image("tortilla\\assets\\sprites\\ship_0.png", SCALE_FACTOR),
+            self._extractor.extract_image("tortilla\\assets\\sprites\\ship_1.png", SCALE_FACTOR)
         )
         self._obstacle_images = (
-            self._extractor.extract_image("data\\assets\\sprites\\obstacle_0.png", SCALE_FACTOR),
+            self._extractor.extract_image("tortilla\\assets\\sprites\\obstacle_0.png", SCALE_FACTOR),
         )
 
     def get_asset(self, entity):

@@ -1,5 +1,5 @@
-from data.hexagon import Hexagon
-from data.entities import *
+from tortilla.hexagon import Hexagon
+from tortilla.entities import *
 
 
 class Attack:

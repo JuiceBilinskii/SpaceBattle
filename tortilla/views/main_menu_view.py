@@ -1,14 +1,14 @@
-from data.views.view import View
-from data.widgets.widget_views import ButtonView
-from data.models.main_menu import MainMenu
-from data.constants import *
+from tortilla.views.view import View
+from tortilla.widgets.widget_views import ButtonView
+from tortilla.models.main_menu import MainMenu
+from tortilla.constants import *
 
 
 class MainMenuView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        self.background_img = self._extractor.extract_image('data\\assets\\backgrounds\\main_menu_bg.png', SCALE_FACTOR)
+        self.background_img = self._extractor.extract_image('tortilla\\assets\\backgrounds\\main_menu_bg.png', SCALE_FACTOR)
         self.pixel_position = 0, 0
 
         self._init_buttons()

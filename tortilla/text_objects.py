@@ -1,4 +1,4 @@
-from data.constants import *
+from tortilla.constants import *
 from pygame import gfxdraw
 
 

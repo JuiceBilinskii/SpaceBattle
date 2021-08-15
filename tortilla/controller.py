@@ -1,12 +1,12 @@
 import pygame
 from enum import Enum
-from data.models.main_menu import MainMenu
-from data.views.main_menu_view import MainMenuView
-from data.models.game import Game
-from data.views.game_view import GameView
-from data.models.settings_menu import SettingsMenu
-from data.views.settings_menu_view import SettingsMenuView
-from data.actions_capturer import ActionsCapturer
+from tortilla.models.main_menu import MainMenu
+from tortilla.views.main_menu_view import MainMenuView
+from tortilla.models.game import Game
+from tortilla.views.game_view import GameView
+from tortilla.models.settings_menu import SettingsMenu
+from tortilla.views.settings_menu_view import SettingsMenuView
+from tortilla.actions_capturer import ActionsCapturer
 
 
 class ProgramStatus(Enum):
