@@ -1,4 +1,5 @@
 from data.move import Move
+from data.attack import Attack
 
 
 class Strategy:
@@ -30,101 +31,87 @@ class Strategy:
     def update_k_v(model):
         pass
 
+    @staticmethod
+    def update_k_space(model):
+        pass
+
 
 class SelectStrategy(Strategy):
     @staticmethod
     def update_k_left(model):
-        x, y = model.field.directed_hexagon
-        if y - 1 >= 0:
-            model.field.directed_hexagon = x, y - 1
+        if model.field.directed_hexagon.neighbors[3]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[3]
+        # x, y = model.field.directed_hexagon
+        #if y - 1 >= 0:
+        #    model.field.directed_hexagon = x, y - 1
         return 'select'
 
     @staticmethod
     def update_k_up(model):
-        x, y = model.field.directed_hexagon
-        if x - 1 >= 0:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x - 1, y - 1
-            else:
-                model.field.directed_hexagon = x - 1, y
+        if model.field.directed_hexagon.neighbors[2]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[2]
         return 'select'
 
     @staticmethod
     def update_k_right(model):
-        x, y = model.field.directed_hexagon
-        if y + 1 <= model.field.cols - 1 and not (y + 1 == model.field.cols - 1 and x % 2 == 1):
-            model.field.directed_hexagon = x, y + 1
+        if model.field.directed_hexagon.neighbors[0]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[0]
         return 'select'
 
     @staticmethod
     def update_k_down(model):
-        x, y = model.field.directed_hexagon
-        if x + 1 <= model.field.rows - 1:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x + 1, y - 1
-            else:
-                model.field.directed_hexagon = x + 1, y
+        if model.field.directed_hexagon.neighbors[5]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[5]
         return 'select'
 
     @staticmethod
     def update_k_a(model):
-        if model.field.hexagons[model.field.directed_hexagon[0]][model.field.directed_hexagon[1]].entity:
-            entity = model.field.hexagons[model.field.directed_hexagon[0]][model.field.directed_hexagon[1]].entity
+        if model.field.directed_hexagon.entity:
+            entity = model.field.directed_hexagon.entity
             model.field.selected_hexagon = model.field.directed_hexagon
-            if entity.owner is model.current_turn:
+            if entity.owner is model.current_player:
+                model.field.reachable_hexagons = model.field.selected_hexagon.neighbors
                 return 'move'
             else:
                 return 'overview'
         return 'select'
 
     @staticmethod
-    def update_k_escape(model):
-        return 'select'
-
-    @staticmethod
-    def update_k_v(model):
+    def update_k_space(model):
+        model.set_next_turn()
         return 'select'
 
 
 class MoveStrategy(Strategy):
     @staticmethod
     def update_k_left(model):
-        x, y = model.field.directed_hexagon
-        if y - 1 >= 0:
-            model.field.directed_hexagon = x, y - 1
+        if model.field.directed_hexagon.neighbors[3]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[3]
         return 'move'
 
     @staticmethod
     def update_k_up(model):
-        x, y = model.field.directed_hexagon
-        if x - 1 >= 0:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x - 1, y - 1
-            else:
-                model.field.directed_hexagon = x - 1, y
+        if model.field.directed_hexagon.neighbors[2]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[2]
         return 'move'
 
     @staticmethod
     def update_k_right(model):
-        x, y = model.field.directed_hexagon
-        if y + 1 <= model.field.cols - 1 and not (y + 1 == model.field.cols - 1 and x % 2 == 1):
-            model.field.directed_hexagon = x, y + 1
+        if model.field.directed_hexagon.neighbors[0]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[0]
         return 'move'
 
     @staticmethod
     def update_k_down(model):
-        x, y = model.field.directed_hexagon
-        if x + 1 <= model.field.rows - 1:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x + 1, y - 1
-            else:
-                model.field.directed_hexagon = x + 1, y
+        if model.field.directed_hexagon.neighbors[5]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[5]
         return 'move'
 
     @staticmethod
     def update_k_a(model):
-        if Move(model.field.hexagons[model.field.selected_hexagon[0]][model.field.selected_hexagon[1]], model.field.hexagons[model.field.directed_hexagon[0]][model.field.directed_hexagon[1]]).execute_move():
+        if Move.execute(model.field.selected_hexagon, model.field.directed_hexagon):
             model.field.selected_hexagon = None
+            model.field.reachable_hexagons = None
             return 'select'
         else:
             return 'move'
@@ -132,50 +119,47 @@ class MoveStrategy(Strategy):
     @staticmethod
     def update_k_escape(model):
         model.field.selected_hexagon = None
+        model.field.reachable_hexagons = None
         return 'select'
 
     @staticmethod
     def update_k_v(model):
+        model.field.reachable_hexagons = None
         return 'attack'
 
 
 class AttackStrategy(Strategy):
     @staticmethod
     def update_k_left(model):
-        x, y = model.field.directed_hexagon
-        if y - 1 >= 0:
-            model.field.directed_hexagon = x, y - 1
+        if model.field.directed_hexagon.neighbors[3]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[3]
         return 'attack'
 
     @staticmethod
     def update_k_up(model):
-        x, y = model.field.directed_hexagon
-        if x - 1 >= 0:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x - 1, y - 1
-            else:
-                model.field.directed_hexagon = x - 1, y
+        if model.field.directed_hexagon.neighbors[2]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[2]
         return 'attack'
 
     @staticmethod
     def update_k_right(model):
-        x, y = model.field.directed_hexagon
-        if y + 1 <= model.field.cols - 1 and not (y + 1 == model.field.cols - 1 and x % 2 == 1):
-            model.field.directed_hexagon = x, y + 1
+        if model.field.directed_hexagon.neighbors[0]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[0]
         return 'attack'
 
     @staticmethod
     def update_k_down(model):
-        x, y = model.field.directed_hexagon
-        if x + 1 <= model.field.rows - 1:
-            if y == model.field.cols - 1:
-                model.field.directed_hexagon = x + 1, y - 1
-            else:
-                model.field.directed_hexagon = x + 1, y
+        if model.field.directed_hexagon.neighbors[5]:
+            model.field.directed_hexagon = model.field.directed_hexagon.neighbors[5]
         return 'attack'
 
-    def update_k_a(self):
-        return 'attack'
+    @staticmethod
+    def update_k_a(model):
+        if Attack.execute(model.field.selected_hexagon, model.field.directed_hexagon):
+            model.field.selected_hexagon = None
+            return 'select'
+        else:
+            return 'attack'
 
     @staticmethod
     def update_k_escape(model):
@@ -189,30 +173,6 @@ class AttackStrategy(Strategy):
 
 class OverviewStrategy(Strategy):
     @staticmethod
-    def update_k_left(self):
-        return 'overview'
-
-    @staticmethod
-    def update_k_up(self):
-        return 'overview'
-
-    @staticmethod
-    def update_k_right(self):
-        return 'overview'
-
-    @staticmethod
-    def update_k_down(self):
-        return 'overview'
-
-    @staticmethod
-    def update_k_a(self):
-        return 'overview'
-
-    @staticmethod
     def update_k_escape(model):
         model.field.selected_hexagon = None
         return 'select'
-
-    @staticmethod
-    def update_k_v(model):
-        return 'overview'

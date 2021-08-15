@@ -7,6 +7,7 @@ class ActionsCapturer:
         self._key_down = False
         self._key_escape = False
         self._key_v = False
+        self._key_space = False
 
     def to_default(self):
         self._key_a = False
@@ -16,6 +17,7 @@ class ActionsCapturer:
         self._key_down = False
         self._key_escape = False
         self._key_v = False
+        self._key_space = False
 
     @property
     def key_a(self): return self._key_a
@@ -38,6 +40,9 @@ class ActionsCapturer:
     @property
     def key_v(self): return self._key_v
 
+    @property
+    def key_space(self): return self._key_space
+
     @key_a.setter
     def key_a(self, value: bool): self._key_a = value
 
@@ -58,3 +63,6 @@ class ActionsCapturer:
 
     @key_v.setter
     def key_v(self, value: bool): self._key_v = value
+
+    @key_space.setter
+    def key_space(self, value: bool): self._key_space = value

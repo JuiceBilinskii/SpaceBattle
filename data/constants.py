@@ -5,12 +5,12 @@ pygame.init()
 
 # Config extraction
 config = {'FULL SCREEN': True}
-CONFIG_FILE = 'config.json'
+CONFIG_FILE = 'data/config.json'
 try:
     with open(CONFIG_FILE) as f:
         _config = json.load(f)
 except FileNotFoundError:
-    _config = {}
+    _config = {'FULL SCREEN': False}
 for k, v in config.items():
     config[k] = _config[k]
 
@@ -39,12 +39,19 @@ LIGHT_BLUE = 0, 191, 255
 PURPLE = 41, 15, 53
 LIGHT_PURPLE = 113, 41, 139
 GREY = 204, 204, 204
+MINT_CREAM = 245, 255, 250
 
 # Fonts
 # FONT_BOLD = 'sprites/fonts/OpenSans-SemiBold.ttf'
-FONT_BOLD = 'assets/fonts/DisposableDroidBB.ttf'
-FONT_REG = 'assets/fonts/OpenSans-Regular.ttf'
-FONT_LIGHT = 'assets/fonts/OpenSans-Light.ttf'
+
+try:
+    FONT_BOLD = 'data/assets/fonts/DisposableDroidBB.ttf'
+    FONT_REG = 'data/assets/fonts/OpenSans-Regular.ttf'
+    FONT_LIGHT = 'data/assets/fonts/OpenSans-Light.ttf'
+except FileNotFoundError:
+    FONT_BOLD = 'arial'
+    FONT_REG = 'arial'
+    FONT_LIGHT = 'arial'
 
 # Texts
 MENU_TEXT = pygame.font.Font(FONT_LIGHT, round(110 / 1080 * SCREEN_HEIGHT))

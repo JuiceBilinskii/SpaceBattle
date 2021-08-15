@@ -1,100 +1,168 @@
 import pygame
-from data.views.iview import IView, constants
+from data.views.view import View
 from data.models.game import Game
+from data.hexagon import Hexagon
 from data.hexagon_points_calculator import HexagonPointsCalculator
 from data.sprites_library import SpritesLibrary
-from data.constants import SCREEN_WIDTH
+from data.text_objects import TextObjects
+from data.constants import SMALL_TEXT, WHITE, BLACK, LIGHT_PURPLE, SCALE_FACTOR
+from data.entities import *
 
 
-class GameView(IView):
+class GameView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        self.field_img = self.extractor.extract_image('assets\\backgrounds\\field_bg.png', constants.SCALE_FACTOR)
-        self.hud_img = self.extractor.extract_image('assets\\backgrounds\\hud_bg.png', constants.SCALE_FACTOR)
-        self.overview_img = self.extractor.extract_image('assets\\backgrounds\\overview_bg.png', constants.SCALE_FACTOR)
+        self.field_img = self._extractor.extract_image('data\\assets\\backgrounds\\field_bg.png', SCALE_FACTOR)
+        self.hud_img = self._extractor.extract_image('data\\assets\\backgrounds\\hud_bg.png', SCALE_FACTOR)
+        self.overview_img = self._extractor.extract_image('data\\assets\\backgrounds\\overview_bg.png', SCALE_FACTOR)
 
-        self.__field = FieldView(screen)
-        self.__hud = HudView(screen)
-        self.__overview = OverviewView(screen)
+        self._field = FieldView(screen)
+        self._hud = HudView(screen)
+        self._overview = OverviewView(screen)
 
     def draw(self, model: Game):
-        self.screen.blit(self.hud_img, (0, 0))
-        self.screen.blit(self.field_img, (0, 36 * constants.SCALE_FACTOR))
-        self.screen.blit(self.overview_img, (1520 * constants.SCALE_FACTOR, 36 * constants.SCALE_FACTOR))
+        self._screen.blit(self.hud_img, (0, 0))
+        self._screen.blit(self.field_img, (0, 36 * SCALE_FACTOR))
+        self._screen.blit(self.overview_img, (1520 * SCALE_FACTOR, 36 * SCALE_FACTOR))
 
-        self.__field.draw(model)
+        self._field.draw(model)
+        self._hud.draw(model)
+        self._overview.draw(model)
 
 
-class FieldView(IView):
+class FieldView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
-        w = 1520 * constants.SCALE_FACTOR
+        w = 1520 * SCALE_FACTOR
         x = 0
-        y = 36 * constants.SCALE_FACTOR
+        y = 36 * SCALE_FACTOR
 
-        self.library = SpritesLibrary()
+        self._library = SpritesLibrary()
 
-        self.__hexagon_size = w / (29 * 3 ** 0.5)
-        self.__hexagons_offset = x + w / 29, y + 0.75 * 2 * w / (29 * 3 ** 0.5)
+        self._hexagon_size = w / (29 * 3 ** 0.5)
+        self._hexagons_offset = x + w / 29, y + 0.75 * 2 * w / (29 * 3 ** 0.5)
 
-        self.__hexagons_points = []
-        self.__init_hexagons_points()
+        self._hexagons_points = []
+        self._init_hexagons_points()
 
-    def __init_hexagons_points(self):
+    def _init_hexagons_points(self):
         for row in range(21):
-            self.__hexagons_points.append([])
+            self._hexagons_points.append([])
             for col in range(28 - row % 2):
                 q, r = col - row // 2, row
-                hex_center, hex_corners = HexagonPointsCalculator.calculate_hex_points((q, r), self.__hexagon_size, self.__hexagons_offset)
-                self.__hexagons_points[row].append((hex_center, hex_corners))
+                hex_center, hex_corners = HexagonPointsCalculator.calculate_hex_points((q, r), self._hexagon_size, self._hexagons_offset)
+                self._hexagons_points[row].append((hex_center, hex_corners))
 
-    def __draw_hexagons_borders(self, rows, cols):
+    def _draw_hexagons_borders(self, rows, cols):
         for row in range(rows):
             for col in range(cols - row % 2):
-                # pygame.draw.lines(self.screen, (71, 26, 92), True, self.__hexagons_points[row][col][1])
-                pygame.draw.lines(self.screen, (71, 26, 92), True, self.__hexagons_points[row][col][1])
+                pygame.draw.lines(self._screen, (71, 26, 92), True, self._hexagons_points[row][col][1])
 
-    def __draw_hexagons_statuses(self, directed_hexagon: (int, int), selected_hexagon: (int, int)):
-        # for row in hexagons:
-        #    for col in row:
-        #        if col.directed:
-        #            pygame.draw.polygon(self.screen, (255, 255, 153), self.__hexagons_points[col.x][col.y][1])
-        #        elif col.selected:
-        #            pygame.draw.polygon(self.screen, (204, 255, 153), self.__hexagons_points[col.x][col.y][1])
-        if directed_hexagon:
-            pygame.draw.polygon(self.screen, (255, 255, 153), self.__hexagons_points[directed_hexagon[0]][directed_hexagon[1]][1])
-        if selected_hexagon:
-            pygame.draw.polygon(self.screen, (204, 255, 153), self.__hexagons_points[selected_hexagon[0]][selected_hexagon[1]][1])
+    def _draw_hexagons_statuses(self, highlighted_hexagons: dict):
+        if highlighted_hexagons['reachable_hexagons']:
+            for reachable_hexagon in highlighted_hexagons['reachable_hexagons']:
+                if reachable_hexagon:
+                    x, y = reachable_hexagon.coordinates
+                    pygame.draw.polygon(self._screen, (0, 125, 125), self._hexagons_points[x][y][1])
+        if highlighted_hexagons['directed_hexagon']:
+            x, y = highlighted_hexagons['directed_hexagon'].coordinates
+            pygame.draw.polygon(self._screen, (255, 255, 153), self._hexagons_points[x][y][1])
+        if highlighted_hexagons['selected_hexagon']:
+            x, y = highlighted_hexagons['selected_hexagon'].coordinates
+            pygame.draw.polygon(self._screen, (204, 255, 153), self._hexagons_points[x][y][1])
 
-    def __draw_entities(self, hexagons):
-        pass
-        for row in hexagons:
-            for hexagon in row:
+    def _draw_entities(self, hexagons):
+        for x, hexagon_row in enumerate(hexagons):
+            for y, hexagon in enumerate(hexagon_row):
                 if hexagon.entity:
-                    entity_img = self.library.get_asset(hexagon.entity)
+                    entity_img = self._library.get_asset(hexagon.entity)
                     rect = entity_img.get_rect()
-                    rect.center = self.__hexagons_points[hexagon.x][hexagon.y][0]
-                    self.screen.blit(entity_img, rect)
+                    rect.center = self._hexagons_points[x][y][0]
+                    self._screen.blit(entity_img, rect)
+
+                    text_surf, text_rect = TextObjects.execute(str(hexagon.entity.health_points), SMALL_TEXT,
+                                                               colour=WHITE)
+                    text_rect = rect
+                    self._screen.blit(text_surf, text_rect)
 
     def draw(self, model: Game):
-        self.__draw_hexagons_borders(model.field.rows, model.field.cols)
-        self.__draw_hexagons_statuses(model.field.directed_hexagon, model.field.selected_hexagon)
-        self.__draw_entities(model.field.hexagons)
+        self._draw_hexagons_borders(model.field.rows, model.field.cols)
+        self._draw_hexagons_statuses(model.field.highlighted_hexagons)
+        self._draw_entities(model.field.hexagons)
 
 
-class HudView(IView):
+class HudView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
     def draw(self, model: Game):
-        pass
+        text_surf, text_rect = TextObjects.execute(str(model.field.directed_hexagon.coordinates), SMALL_TEXT, colour=WHITE)
+        text_rect.midleft = (5, 18 * SCALE_FACTOR)
+        self._screen.blit(text_surf, text_rect)
 
 
-class OverviewView(IView):
+class OverviewView(View):
     def __init__(self, screen: pygame.Surface):
         super().__init__(screen)
 
+        self._x = 1520 * SCALE_FACTOR
+        self._y = 36 * SCALE_FACTOR
+        self._width = 400 * SCALE_FACTOR
+        self._height = 1044 * SCALE_FACTOR
+        self._players_rects = [
+            pygame.Rect(self._x + 2 * SCALE_FACTOR, self._y + 54 * SCALE_FACTOR, 198 * SCALE_FACTOR, 198 * SCALE_FACTOR),
+            pygame.Rect(self._x + 200 * SCALE_FACTOR, self._y + 54 * SCALE_FACTOR, 198 * SCALE_FACTOR, 198 * SCALE_FACTOR)
+        ]
+        self._mode_rects = [
+            pygame.Rect(int(self._x + 0 * SCALE_FACTOR), int(self._y + 450 * SCALE_FACTOR), int(200 * SCALE_FACTOR),
+                        int(40 * SCALE_FACTOR)),
+            pygame.Rect(int(self._x + 200 * SCALE_FACTOR), int(self._y + 450 * SCALE_FACTOR), int(200 * SCALE_FACTOR),
+                        int(40 * SCALE_FACTOR))
+        ]
+
+        self._library = SpritesLibrary()
+
     def draw(self, model: Game):
-        pass
+        # headers
+        text_surf, text_rect = TextObjects.execute('Players', SMALL_TEXT, colour=WHITE)
+        text_rect.center = (self._x + self._width // 2, self._y + 27 * SCALE_FACTOR)
+        self._screen.blit(text_surf, text_rect)
+
+        text_surf, text_rect = TextObjects.execute('Overview', SMALL_TEXT, colour=WHITE)
+        text_rect.center = (self._x + self._width // 2, self._y + 517 * SCALE_FACTOR)
+        self._screen.blit(text_surf, text_rect)
+
+        # modes
+        for mode_rect in self._mode_rects:
+            pygame.draw.rect(self._screen, WHITE, mode_rect)
+
+        text_surf, text_rect = TextObjects.execute('Move', SMALL_TEXT, colour=BLACK)
+        text_rect.center = (self._x + 99 * SCALE_FACTOR, self._y + 470 * SCALE_FACTOR)
+        self._screen.blit(text_surf, text_rect)
+        text_surf, text_rect = TextObjects.execute('Attack', SMALL_TEXT, colour=BLACK)
+        text_rect.center = (self._x + 299 * SCALE_FACTOR, self._y + 470 * SCALE_FACTOR)
+        self._screen.blit(text_surf, text_rect)
+
+        # players
+        pygame.draw.rect(self._screen, LIGHT_PURPLE, self._players_rects[model.current_player.player_id])
+
+        # selected entity
+        if model.field.selected_hexagon:
+            entity = model.field.selected_hexagon.entity
+            entity_img = self._library.get_asset(entity)
+            rect = entity_img.get_rect()
+            rect.center = (self._x + self._width // 2, self._y + 604 * SCALE_FACTOR)
+            self._screen.blit(entity_img, rect)
+
+            health_points = str(entity.health_points)
+            text_surf, text_rect = TextObjects.execute('Health points: ' + health_points, SMALL_TEXT, colour=WHITE)
+            text_rect.midleft = (self._x + 10 * SCALE_FACTOR, self._y + 670 * SCALE_FACTOR)
+            self._screen.blit(text_surf, text_rect)
+
+            if issubclass(type(entity), Movable):
+                health_points = str(entity.move_points)
+                text_surf, text_rect = TextObjects.execute('Move points: ' + health_points, SMALL_TEXT, colour=WHITE)
+                text_rect.midleft = (self._x + 10 * SCALE_FACTOR, self._y + 700 * SCALE_FACTOR)
+                self._screen.blit(text_surf, text_rect)
